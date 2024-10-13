@@ -110,6 +110,9 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# OpenAI API key
+export OPEN_AI_API=sk-...IkfW
+
 # To add the mojo sdk
 export MODULAR_HOME="$HOME/.modular"
 export PATH="$MODULAR_HOME/pkg/packages.modular.com_mojo/bin:$PATH"
@@ -128,3 +131,50 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 alias dot='/usr/bin/git --git-dir=/home/rstar24/dotfiles --work-tree=$HOME'
+alias bat='batcat'
+
+alias bk="cd /mnt/e/SoftDEVTrench/Programmingbooks/ && fzf | xargs okular || cd ~ "
+
+# Check if we're inside a tmux session
+if [ -z "$TMUX" ]; then
+    # If not inside a tmux session, start a new tmux session
+    # tmux new-session -A -s mysession
+    tmux attach-session -t 0
+fi
+
+# Making a function for sarting the 
+# competitive coding env 
+function getcp(){
+    # Set the directory you want to start from
+    START_DIR="/mnt/e/new_approach/"
+
+    # Name of the tmux session
+    SESSION_NAME="cp_gym"
+
+    # Check if the session already exists
+    tmux has-session -t $SESSION_NAME 2>/dev/null
+
+    if [ $? != 0 ]; then
+      # The session doesn't exist, create it
+        cd $STARTDIR
+        tmux new-session -d -s $SESSION_NAME -c $START_DIR \; \
+        split-window -v \; \
+        split-window -h\; \
+        select-layout main-vertical \;  
+        
+        tmux send-keys -t $SESSION_NAME:0.1 "cd ${START_DIR} && nvim ${START_DIR}inp" Enter
+        tmux send-keys -t $SESSION_NAME:0.0 "nvim" Enter
+        tmux send-keys -t $SESSION_NAME:0.2 "cd ${START_DIR} && clear && echo GRIND| lolcat " Enter
+
+        tmux attach
+    else 
+        tmux attach
+    fi
+
+
+}
+
+function cuss() {
+    figlet Gandu | pv -qL 5000 | lolcat 
+    echo पहले देख फिर लिख   | lolcat 
+}
